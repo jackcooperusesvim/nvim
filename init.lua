@@ -90,6 +90,9 @@ P.S. You can delete this when you're done too. It's your config now! :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+-- THIS IS FOR MARKDOWN
+vim.opt.conceallevel = 2
+
 -- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = false
 
@@ -150,9 +153,11 @@ vim.opt.inccommand = 'split'
 
 -- Show which line your cursor is on
 vim.opt.cursorline = true
+vim.o.guicursor = 'n-v-c-sm:block-blinkwait1-blinkon100-blinkoff100,i-ci-ve:ver25,r-cr-o:hor20'
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 4
+-- vim.opt.guicursor = ''
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -160,6 +165,9 @@ vim.opt.scrolloff = 10
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+
+-- transparent / transparency setting
+vim.g.transparent_enabled = true
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
@@ -240,7 +248,6 @@ require('lazy').setup({
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
-  { 'nvimdev/lspsaga.nvim', lazy = true },
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
   --    require('gitsigns').setup({ ... })
@@ -255,31 +262,6 @@ require('lazy').setup({
         delete = { text = '_' },
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
-      },
-    },
-  },
-  {
-    'MasterTemple/bible.nvim',
-    keys = {
-      {
-        '<leader>bs',
-        '<cmd>lua require("telescope").extensions.bible.bible({isReferenceOnly = false, isMultiSelect = false})<CR>',
-        desc = 'Search by verse content',
-      },
-      {
-        '<leader>br',
-        '<cmd>lua require("telescope").extensions.bible.bible({isReferenceOnly = true, isMultiSelect = false})<CR>',
-        desc = 'Search by verse reference',
-      },
-      {
-        '<leader>bms',
-        '<cmd>lua require("telescope").extensions.bible.bible({isReferenceOnly = false, isMultiSelect = true})<CR>',
-        desc = 'Search by verse content (multi-select)',
-      },
-      {
-        '<leader>bmr',
-        '<cmd>lua require("telescope").extensions.bible.bible({isReferenceOnly = true, isMultiSelect = true})<CR>',
-        desc = 'Search by verse reference (multi-select)',
       },
     },
   },
@@ -302,7 +284,12 @@ require('lazy').setup({
     'nvimdev/lspsaga.nvim',
     lazy = false,
     config = function()
-      require('lspsaga').setup {}
+      require('lspsaga').setup {
+        ui = {
+          -- WARN: THIS IS ONLY INTENDED TO BE A TEMPORARY FIX. LEARN HOW TO USE THE OPTIONS AT https://nvimdev.github.io/lspsaga/lightbulb/
+          code_action = '',
+        },
+      }
       vim.keymap.set('n', '<leader>y', '<CMD>Lspsaga term_toggle<CR>', { desc = 'Open terminal' })
     end,
     dependencies = {
@@ -422,8 +409,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>/', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
         builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-          winblend = 10,
-          previewer = false,
+          previewer = true,
         })
       end, { desc = '[/] Fuzzily search in current buffer' })
 
@@ -534,11 +520,12 @@ require('lazy').setup({
 
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
-          map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+          map('<leader>cs', vim.lsp.buf.code_action, '[C]ode [S]uggestion')
 
           -- Opens a popup that displays documentation about the word under your cursor
           --  See `:help K` for why this keymap.
           map('K', vim.lsp.buf.hover, 'Hover Documentation')
+          map('J', vim.lsp.buf.signature_help, 'Signature help')
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
@@ -584,6 +571,8 @@ require('lazy').setup({
         -- clangd = {},
         gopls = {},
         pyright = {},
+        mypy = {},
+        black = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -793,63 +782,72 @@ require('lazy').setup({
     },
   },
   { 'xiyaowong/transparent.nvim', lazy = false },
-
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'ellisonleao/gruvbox.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
-    init = function()
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'kanagawa-wave', 'kanagawa-dragon', or 'kanagawa-lotus'.
-      vim.cmd.colorscheme 'gruvbox'
-
-      -- You can configure highlights by doing something like:
-      vim.cmd.hi 'Comment gui=none'
-    end,
-    opts = {},
+  {
+    'ThePrimeagen/harpoon',
+    branch = 'harpoon2',
+    dependencies = { 'nvim-lua/plenary.nvim' },
   },
-
+  { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
-  {
-    'Exafunction/codeium.vim',
-    lazy = false,
-    event = 'BufEnter',
-    config = function()
-      vim.g.codeium_enabled = false
-      -- Change '<C-g>' here to any keycode you like.
-      vim.keymap.set('i', '<c-g>', function()
-        return vim.fn['codeium#Accept']()
-      end, { expr = true, silent = true })
-      vim.keymap.set('i', '<c-;>', function()
-        return vim.fn['codeium#CycleCompletions'](1)
-      end, { expr = true, silent = true })
-      vim.keymap.set('i', '<c-,>', function()
-        return vim.fn['codeium#CycleCompletions'](-1)
-      end, { expr = true, silent = true })
-      vim.keymap.set('i', '<c-x>', function()
-        return vim.fn['codeium#Clear']()
-      end, { expr = true, silent = true })
-      vim.keymap.set('n', '<leader>c', function()
-        return vim.fn['codeium#Chat']()
-      end, { expr = true, silent = true })
-    end,
-  },
-  -- AI
+  { 'windwp/nvim-ts-autotag', lazy = false },
   { 'nvim-tree/nvim-web-devicons', lazy = false },
+  {
+    'chentoast/marks.nvim',
+    event = 'VeryLazy',
+    opts = {},
+  },
   { 'stevearc/dressing.nvim', opts = {} },
+  -- {
+  --   'folke/flash.nvim',
+  --   event = 'VeryLazy',
+  --   ---@type Flash.Config
+  --   opts = {},
+  -- -- stylua: ignore
+  --   keys = {
+  --     { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+  --     { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+  --     { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+  --     { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+  --     { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+  --   },
+  -- },
   {
     'stevearc/oil.nvim',
     opts = { columns = { 'icon' } },
+    keymaps = {
+      ['g?'] = 'actions.show_help',
+      ['<CR>'] = 'actions.select',
+      ['<C-s>'] = 'actions.select_vsplit',
+      ['<C-S>'] = 'actions.select_split',
+      -- ["<C-h>"] = "actions.select_split",
+      ['<C-t>'] = 'actions.select_tab',
+      ['<C-p>'] = 'actions.preview',
+      ['<C-c>'] = 'actions.close',
+      -- ["<C-l>"] = "actions.refresh",
+      ['-'] = 'actions.parent',
+      ['_'] = 'actions.open_cwd',
+      ['`'] = 'actions.cd',
+      ['~'] = 'actions.tcd',
+      ['gs'] = 'actions.change_sort',
+      ['gx'] = 'actions.open_external',
+      ['g.'] = 'actions.toggle_hidden',
+      ['g\\'] = 'actions.toggle_trash',
+    },
+    use_default_keymaps = false,
     -- Optional dependencies
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
   { 'preservim/tagbar', event = 'VimEnter' },
-  { 'stevearc/aerial.nvim', event = 'VimEnter' },
+  {
+    'stevearc/aerial.nvim',
+    opts = {},
+    -- Optional dependencies
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-tree/nvim-web-devicons',
+    },
+  },
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
     config = function()
@@ -859,14 +857,14 @@ require('lazy').setup({
       --  - va)  - [V]isually select [A]round [)]paren
       --  - yinq - [Y]ank [I]nside [N]ext [']quote
       --  - ci'  - [C]hange [I]nside [']quote
-      require('mini.ai').setup { n_lines = 500 }
+      -- require('mini.ai').setup { n_lines = 500 }
 
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
       -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup()
+      -- require('mini.surround').setup()
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
@@ -891,7 +889,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -899,9 +897,9 @@ require('lazy').setup({
         -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
         --  If you are experiencing weird indenting issues, add the language to
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        additional_vim_regex_highlighting = { 'ruby', 'go', 'python' },
+        additional_vim_regex_highlighting = { 'ruby', 'go', 'python', 'markdown', 'markdown_inline' },
       },
-      indent = { enable = true, disable = { 'ruby' } },
+      indent = { enable = true, disable = { 'ruby', 'html' } },
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
@@ -957,6 +955,68 @@ require('lazy').setup({
       lazy = '💤 ',
     },
   },
+  {
+    'nvim-lua/plenary.nvim',
+    lazy = false,
+    dependencies = {
+      {
+        'theHamsta/nvim_rocks',
+        build = 'pip3 install --user hererocks && python3 -mhererocks . -j2.1.0-beta3 -r3.0.0 && cp nvim_rocks.lua lua',
+        config = function()
+          local nvim_rocks = require 'nvim_rocks'
+          nvim_rocks.ensure_installed 'lsqlite3'
+          nvim_rocks.ensure_installed 'dkjson'
+        end,
+      },
+    },
+  },
+  {
+    'karb94/neoscroll.nvim',
+    config = function()
+      require('neoscroll').setup {}
+    end,
+    lazy = false,
+  },
+  {
+    'roobert/hoversplit.nvim',
+    config = function()
+      require('hoversplit').setup {
+        key_bindings = {
+          split_remain_focused = '<leader>hs',
+          vsplit_remain_focused = '<leader>hv',
+          split = '<leader>hS',
+          vsplit = '<leader>hV',
+        },
+      }
+    end,
+    lazy = false,
+  },
+  {
+    'MasterTemple/bible.nvim',
+    keys = {
+      {
+        '<leader>sbc',
+        '<cmd>lua require("telescope").extensions.bible.bible({isReferenceOnly = false, isMultiSelect = false})<CR>',
+        desc = 'Search by verse content',
+      },
+      {
+        '<leader>sbv',
+        '<cmd>lua require("telescope").extensions.bible.bible({isReferenceOnly = true, isMultiSelect = false})<CR>',
+        desc = 'Search by verse reference',
+      },
+      {
+        '<leader>sbmc',
+        '<cmd>lua require("telescope").extensions.bible.bible({isReferenceOnly = false, isMultiSelect = true})<CR>',
+        desc = 'Search by verse content (multi-select)',
+      },
+      {
+        '<leader>sbmv',
+        '<cmd>lua require("telescope").extensions.bible.bible({isReferenceOnly = true, isMultiSelect = true})<CR>',
+        desc = 'Search by verse reference (multi-select)',
+      },
+      lazy = false,
+    },
+  },
 })
 vim.keymap.set('n', '<C-f>', '<C-f>zz')
 vim.keymap.set('n', '<C-b>', '<C-b>zz')
@@ -970,10 +1030,28 @@ require('aerial').setup {
     vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', { buffer = bufnr })
   end,
 }
-vim.keymap.set('n', '<leader>a', '<cmd>AerialToggle!<CR>')
+vim.keymap.set('n', '<leader>A', '<cmd>AerialToggle!<CR>')
 vim.keymap.set('n', '<leader>t', '<CMD>Neotree<CR>', { desc = 'Neotree' })
 vim.keymap.set('n', '<leader>wvs', '<CMD>vsplit<CR>')
 vim.keymap.set('n', '<leader>whs', '<CMD>split<CR>')
+
+-- nvim HTML tags
+require('nvim-ts-autotag').setup {
+  opts = {
+    -- Defaults
+    enable_close = true, -- Auto close tags
+    enable_rename = true, -- Auto rename pairs of tags
+    enable_close_on_slash = false, -- Auto close on trailing </
+  },
+  -- Also override individual filetype configs, these take priority.
+  -- Empty by default, useful if one of the "opts" global settings
+  -- doesn't work well in a specific filetype
+  per_filetype = {
+    ['html'] = {
+      enable_close = false,
+    },
+  },
+}
 require('transparent').setup { -- Optional, you don't have to run setup.
   groups = { -- table: default groups
     'Normal',
@@ -998,13 +1076,98 @@ require('transparent').setup { -- Optional, you don't have to run setup.
     'SignColumn',
     'CursorLine',
     'CursorLineNr',
-    'StatusLine',
-    'StatusLineNC',
     'EndOfBuffer',
+    'NormalFloat',
   },
-  extra_groups = {}, -- table: additional groups that should be cleared
+  extra_groups = {
+    'NormalFloat',
+  },
   exclude_groups = {}, -- table: groups you don't want to clear
 }
+
+local harpoon = require 'harpoon'
+harpoon:setup()
+vim.keymap.set('n', '<leader>a', function()
+  harpoon:list():add()
+end)
+vim.keymap.set('n', '<C-s>', function()
+  harpoon.ui:toggle_quick_menu(harpoon:list())
+end)
+
+vim.keymap.set('n', '<C-n>', function()
+  harpoon:list():select(1)
+end)
+vim.keymap.set('n', '<C-e>', function()
+  harpoon:list():select(2)
+end)
+vim.keymap.set('n', '<C-i>', function()
+  harpoon:list():select(3)
+end)
+vim.keymap.set('n', '<C-o>', function()
+  harpoon:list():select(4)
+end)
+
+-- Toggle previous & next buffers stored within Harpoon list
+vim.keymap.set('n', '<C-S-P>', function()
+  harpoon:list():prev()
+end)
+vim.keymap.set('n', '<C-S-N>', function()
+  harpoon:list():next()
+end)
+require('catppuccin').setup {
+  flavour = 'mocha', -- latte, frappe, macchiato, mocha
+  background = { -- :h background
+    light = 'latte',
+    dark = 'mocha',
+  },
+  transparent_background = true, -- disables setting the background color.
+  show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
+  term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
+  dim_inactive = {
+    enabled = false, -- dims the background color of inactive window
+    shade = 'dark',
+    percentage = 0.15, -- percentage of the shade to apply to the inactive window
+  },
+  no_italic = false, -- Force no italic
+  no_bold = false, -- Force no bold
+  no_underline = false, -- Force no underline
+  styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
+    comments = { 'italic' }, -- Change the style of comments
+    conditionals = { 'italic' },
+    loops = {},
+    functions = {},
+    keywords = {},
+    strings = {},
+    variables = {},
+    numbers = {},
+    booleans = {},
+    properties = {},
+    types = { 'altfont' },
+    operators = {},
+    -- miscs = {}, -- Uncomment to turn off hard-coded styles
+  },
+  color_overrides = {},
+  custom_highlights = {},
+  default_integrations = true,
+  integrations = {
+    cmp = true,
+    gitsigns = true,
+    nvimtree = true,
+    treesitter = true,
+    notify = false,
+    mini = {
+      enabled = true,
+      indentscope_color = '',
+    },
+    -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+  },
+}
+
+-- setup must be called before loading
+vim.cmd.colorscheme 'catppuccin'
+
+vim.keymap.set('n', '<leader>cm', '<cmd>TransparentToggle<CR>')
+vim.cmd 'TransparentToggle'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
