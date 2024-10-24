@@ -1217,5 +1217,15 @@ vim.keymap.set('n', '<leader>cm', '<cmd>TransparentToggle<CR>')
 vim.keymap.set({ 'n', 'v', 'i' }, '<F15>', '<cmd>FloatermToggle<CR>')
 --TODO: BUILD A PYTHON THING TO GO HERE
 
+vim.keymap.set({ 'n', 'v', 'i' }, '<F15>', '<cmd>FloatermNew --wintype=float --border=rounded --title=Python --silent --name=Python python3<CR>')
+vim.keymap.set({ 'n', 'i' }, '<F16>', '<cmd>FloatermSend --name=Python<CR>')
+vim.keymap.set({ 'n', 'v', 'i' }, '<F12>', '<cmd>FloatermNext<CR>')
+vim.keymap.set({ 'n', 'v', 'i' }, '<F11>', '<cmd>FloatermPrev<CR>')
+
+vim.keymap.set({ 'n', 'v' }, '<leader>wpn', '<cmd>FloatermNew --wintype=float --border=rounded --title=Python --silent --name=Python python3<CR>')
+vim.keymap.set({ 'n', 'v' }, '<leader>wps', '<cmd>FloatermSend--name=Python <CR>')
+vim.keymap.set({ 'n', 'v' }, '<leader>wtn', '<cmd>FloatermNew --wintype=float<CR>')
+vim.keymap.set({ 'n', 'v' }, '<leader>wtt', '<cmd>FloatermToggle<CR>')
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
