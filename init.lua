@@ -790,10 +790,6 @@ require('lazy').setup({
     branch = 'harpoon2',
     dependencies = { 'nvim-lua/plenary.nvim' },
   },
-<<<<<<< HEAD
-=======
-  { 'ellisonleao/gruvbox.nvim', lazy = false, priority = 1000 },
->>>>>>> refs/remotes/origin/main
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
   { 'windwp/nvim-ts-autotag', lazy = false },
