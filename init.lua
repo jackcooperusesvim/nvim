@@ -168,7 +168,7 @@ vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- transparent / transparency setting
-vim.g.transparent_enabled = true
+vim.g.transparent_enabled = false
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
@@ -204,7 +204,7 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
+
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
@@ -783,7 +783,7 @@ require('lazy').setup({
       -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
     },
   },
-  { 'xiyaowong/transparent.nvim', lazy = false },
+  --{ 'xiyaowong/transparent.nvim', lazy = false },
   {
     'ThePrimeagen/harpoon',
     branch = 'harpoon2',
@@ -1098,38 +1098,38 @@ require('nvim-ts-autotag').setup {
     },
   },
 }
-require('transparent').setup { -- Optional, you don't have to run setup.
-  groups = { -- table: default groups
-    'Normal',
-    'NormalNC',
-    'Comment',
-    'Constant',
-    'Special',
-    'Identifier',
-    'Statement',
-    'PreProc',
-    'Type',
-    'Underlined',
-    'Todo',
-    'String',
-    'Function',
-    'Conditional',
-    'Repeat',
-    'Operator',
-    'Structure',
-    'LineNr',
-    'NonText',
-    'SignColumn',
-    'CursorLine',
-    'CursorLineNr',
-    'EndOfBuffer',
-    'NormalFloat',
-  },
-  extra_groups = {
-    'NormalFloat',
-  },
-  exclude_groups = {}, -- table: groups you don't want to clear
-}
+-- require('transparent').setup { -- Optional, you don't have to run setup.
+--   groups = { -- table: default groups
+--     'Normal',
+--     'NormalNC',
+--     'Comment',
+--     'Constant',
+--     'Special',
+--     'Identifier',
+--     'Statement',
+--     'PreProc',
+--     'Type',
+--     'Underlined',
+--     'Todo',
+--     'String',
+--     'Function',
+--     'Conditional',
+--     'Repeat',
+--     'Operator',
+--     'Structure',
+--     'LineNr',
+--     'NonText',
+--     'SignColumn',
+--     'CursorLine',
+--     'CursorLineNr',
+--     'EndOfBuffer',
+--     'NormalFloat',
+--   },
+--   extra_groups = {
+--     'NormalFloat',
+--   },
+--   exclude_groups = {}, -- table: groups you don't want to clear
+-- }
 
 local harpoon = require 'harpoon'
 harpoon:setup()
@@ -1163,7 +1163,7 @@ end)
 
 -- vim.keymap.set('n', '<C-f>', '<C-f>zz')
 -- vim.keymap.set('n', '<C-b>', '<C-b>zz')
-vim.keymap.set('n', '<leader>cm', '<cmd>TransparentToggle<CR>')
+--vim.keymap.set('n', '<leader>cm', '<cmd>TransparentToggle<CR>')
 vim.keymap.set({ 'n', 'v', 'i' }, '<F15>', '<cmd>FloatermToggle<CR>')
 --TODO: BUILD A PYTHON THING TO GO HERE
 
