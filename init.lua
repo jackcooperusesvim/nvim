@@ -1162,20 +1162,6 @@ vim.keymap.set('n', '<C-S-N>', function()
   harpoon:list():next()
 end)
 
-<<<<<<< HEAD
--- setup must be called before loading
-
-=======
--- Default options
-require("gruvbox").setup({
-  terminal_colors = true,
-  transparent_mode = true
-})
--- setup must be called before loading
-
-vim.cmd.colorscheme 'gruvbox'
-
->>>>>>> refs/remotes/origin/main
 -- vim.keymap.set('n', '<C-f>', '<C-f>zz')
 -- vim.keymap.set('n', '<C-b>', '<C-b>zz')
 vim.keymap.set('n', '<leader>cm', '<cmd>TransparentToggle<CR>')
