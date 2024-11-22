@@ -790,6 +790,10 @@ require('lazy').setup({
     branch = 'harpoon2',
     dependencies = { 'nvim-lua/plenary.nvim' },
   },
+<<<<<<< HEAD
+=======
+  { 'ellisonleao/gruvbox.nvim', lazy = false, priority = 1000 },
+>>>>>>> refs/remotes/origin/main
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
   { 'windwp/nvim-ts-autotag', lazy = false },
@@ -1162,8 +1166,20 @@ vim.keymap.set('n', '<C-S-N>', function()
   harpoon:list():next()
 end)
 
+<<<<<<< HEAD
 -- setup must be called before loading
 
+=======
+-- Default options
+require("gruvbox").setup({
+  terminal_colors = true,
+  transparent_mode = true
+})
+-- setup must be called before loading
+
+vim.cmd.colorscheme 'gruvbox'
+
+>>>>>>> refs/remotes/origin/main
 -- vim.keymap.set('n', '<C-f>', '<C-f>zz')
 -- vim.keymap.set('n', '<C-b>', '<C-b>zz')
 vim.keymap.set('n', '<leader>cm', '<cmd>TransparentToggle<CR>')
