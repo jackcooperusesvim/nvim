@@ -235,6 +235,7 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
+  { 'nvim-tree/nvim-web-devicons', lazy = false },
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   -- NOTE: Plugins can also be added by using a table,
@@ -780,7 +781,7 @@ require('lazy').setup({
       'nvim-lua/plenary.nvim',
       'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
       'MunifTanjim/nui.nvim',
-      -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
+      '3rd/image.nvim', -- Optional image support in preview window: See `# Preview Mode` for more information
     },
   },
   --{ 'xiyaowong/transparent.nvim', lazy = false },
@@ -792,7 +793,6 @@ require('lazy').setup({
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
   { 'windwp/nvim-ts-autotag', lazy = false },
-  { 'nvim-tree/nvim-web-devicons', lazy = false },
   {
     'chentoast/marks.nvim',
     event = 'VeryLazy',
@@ -1161,8 +1161,9 @@ vim.keymap.set('n', '<C-S-N>', function()
   harpoon:list():next()
 end)
 
--- vim.keymap.set('n', '<C-f>', '<C-f>zz')
--- vim.keymap.set('n', '<C-b>', '<C-b>zz')
+vim.keymap.set('n', '<C-f>', '<C-f>zz')
+vim.keymap.set('n', '<C-b>', '<C-b>zz')
+
 --vim.keymap.set('n', '<leader>cm', '<cmd>TransparentToggle<CR>')
 vim.keymap.set({ 'n', 'v', 'i' }, '<F15>', '<cmd>FloatermToggle<CR>')
 --TODO: BUILD A PYTHON THING TO GO HERE
