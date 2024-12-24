@@ -988,5 +988,9 @@ vim.keymap.set({ 'n', 'v' }, '<leader>wps', '<cmd>FloatermSend--name=Python <CR>
 vim.keymap.set({ 'n', 'v' }, '<leader>wtn', '<cmd>FloatermNew --wintype=float<CR>')
 vim.keymap.set({ 'n', 'v' }, '<leader>wtt', '<cmd>FloatermToggle<CR>')
 
+-- open Neotree and Aerial on startup
+vim.cmd 'AerialOpen'
+vim.cmd 'Neotree'
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
