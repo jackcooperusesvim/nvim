@@ -360,6 +360,7 @@ require('lazy').setup({
           return vim.fn.executable 'make' == 1
         end,
       },
+      { 'jackcooperusesvim/telescope-rails.nvim' },
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
@@ -407,9 +408,16 @@ require('lazy').setup({
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
+      pcall(require('telescope').load_extension, 'rails')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
+      -- Rails Extension
+      vim.keymap.set('n', '<leader>rc', '<CMD>Telescope rails controllers<CR>', { desc = '[R]ails [C]ontrollers' })
+      vim.keymap.set('n', '<leader>rm', '<CMD>Telescope rails models<CR>', { desc = '[R]ails [M]odels' })
+      vim.keymap.set('n', '<leader>rv', '<CMD>Telescope rails views<CR>', { desc = '[R]ails [V]iews' })
+      vim.keymap.set('n', '<leader>ri', '<CMD>Telescope rails migrations<CR>', { desc = '[R]ails [M]igrations' })
+
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
