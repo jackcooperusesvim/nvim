@@ -636,6 +636,11 @@ require('lazy').setup({
         gopls = {},
         pyright = {},
         rust_analyzer = {},
+        -- htmx_lsp = {},
+        -- html_lsp = {},
+        templ = {},
+        gofumpt = {},
+        gotests = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -997,8 +1002,8 @@ vim.keymap.set({ 'n', 'v' }, '<leader>wtn', '<cmd>FloatermNew --wintype=float<CR
 vim.keymap.set({ 'n', 'v' }, '<leader>wtt', '<cmd>FloatermToggle<CR>')
 
 -- open Neotree and Aerial on startup
-vim.cmd 'AerialOpen'
-vim.cmd 'Neotree'
+-- vim.cmd 'AerialOpen'
+-- vim.cmd 'Neotree'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
