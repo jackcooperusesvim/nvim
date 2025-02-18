@@ -1001,6 +1001,8 @@ vim.keymap.set({ 'n', 'v' }, '<leader>wps', '<cmd>FloatermSend--name=Python <CR>
 vim.keymap.set({ 'n', 'v' }, '<leader>wtn', '<cmd>FloatermNew --wintype=float<CR>')
 vim.keymap.set({ 'n', 'v' }, '<leader>wtt', '<cmd>FloatermToggle<CR>')
 
+vim.keymap.set('n', '<C-f>', '<C-f>zz')
+vim.keymap.set('n', '<C-b>', '<C-b>zz')
 -- open Neotree and Aerial on startup
 -- vim.cmd 'AerialOpen'
 -- vim.cmd 'Neotree'
