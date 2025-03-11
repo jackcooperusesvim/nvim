@@ -1003,6 +1003,11 @@ vim.keymap.set({ 'n', 'v' }, '<leader>wtt', '<cmd>FloatermToggle<CR>')
 
 vim.keymap.set('n', '<C-f>', '<C-f>zz')
 vim.keymap.set('n', '<C-b>', '<C-b>zz')
+
+vim.keymap.set({ 'n', 'x', 'o' }, 's', '<Plug>(leap-forward)')
+vim.keymap.set({ 'n', 'x', 'o' }, 'S', '<Plug>(leap-backward)')
+vim.keymap.set({ 'n', 'x', 'o' }, 'gs', '<Plug>(leap-from-window)')
+
 -- open Neotree and Aerial on startup
 -- vim.cmd 'AerialOpen'
 -- vim.cmd 'Neotree'
