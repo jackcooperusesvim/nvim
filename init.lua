@@ -631,7 +631,17 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-      local servers = {
+
+      function table.table_copy(t)
+        local t2 = {}
+        -- iterate the array
+        for k, v in pairs(t) do
+          t2[k] = v
+        end
+        return t2
+      end
+
+      local mason_servers = {
         -- clangd = {},
         gopls = {},
         pyright = {},
@@ -640,16 +650,6 @@ require('lazy').setup({
         -- html_lsp = {},
         templ = {},
         gofumpt = {},
-        gotests = {},
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
-        --
-
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -676,7 +676,7 @@ require('lazy').setup({
 
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
-      local ensure_installed = vim.tbl_keys(servers or {})
+      local ensure_installed = vim.tbl_keys(mason_servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
       })
@@ -685,7 +685,7 @@ require('lazy').setup({
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
-            local server = servers[server_name] or {}
+            local server = mason_servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for ts_ls)
@@ -729,6 +729,18 @@ require('lazy').setup({
           lsp_format = lsp_format_opt,
         }
       end,
+      servers = {
+        mojo = {
+          on_new_config = function(config)
+            if vim.fn.executable 'mojo-lsp-server' == 0 then
+              vim.notify('(Run `magic shell` before entering neovim)', vim.log.levels.WARN, { title = 'MOJO LSP NOT STARTED', icon = '🚨', timeout = 10000 })
+              -- avoid trying to run mojo-lsp-server
+              config.cmd = { 'echo', 'mojo lsp is working' }
+              return
+            end
+          end,
+        },
+      },
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
