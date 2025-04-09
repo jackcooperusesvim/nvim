@@ -646,6 +646,7 @@ require('lazy').setup({
         gopls = {},
         pyright = {},
         rust_analyzer = {},
+        ruby_lsp = {},
         -- htmx_lsp = {},
         -- html_lsp = {},
         templ = {},
