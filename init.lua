@@ -169,6 +169,7 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 function nice_diagnostic_float()
   vim.diagnostic.open_float { border = 'double' }
 end
+
 vim.keymap.set('n', '<leader>e', nice_diagnostic_float, { desc = 'Open diagnostic dropdown' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
@@ -195,6 +196,7 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 function split_keep_scroll() end
+
 -- vim.keymap.set('n', '', '<CMD>vsplit<CR>', { desc = 'Move focus to the upper window' })
 
 -- TODO: FINISH THIS
@@ -280,7 +282,7 @@ require('lazy').setup({
   -- after the plugin has been loaded:
   --  config = function() ... end
 
-  { -- Useful plugin to show you pending keybinds.
+  {                     -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     opts = {
@@ -323,7 +325,7 @@ require('lazy').setup({
 
       -- Document existing key chains
       spec = {
-        { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
+        { '<leader>c', group = '[C]ode',     mode = { 'n', 'x' } },
         { '<leader>d', group = '[D]ocument' },
         { '<leader>r', group = '[R]ename' },
         { '<leader>s', group = '[S]earch' },
@@ -364,7 +366,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -467,7 +469,7 @@ require('lazy').setup({
       },
     },
   },
-  { 'Bilal2453/luvit-meta', lazy = true },
+  { 'Bilal2453/luvit-meta',     lazy = true },
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
@@ -479,7 +481,7 @@ require('lazy').setup({
 
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim',       opts = {} },
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
@@ -642,15 +644,15 @@ require('lazy').setup({
       end
 
       local mason_servers = {
-        -- clangd = {},
-        gopls = {},
-        pyright = {},
-        rust_analyzer = {},
-        ruby_lsp = {},
+        clangd = {},
+        -- gopls = {},
+        -- pyright = {},
+        -- rust_analyzer = {},
+        -- ruby_lsp = {},
         -- htmx_lsp = {},
         -- html_lsp = {},
-        templ = {},
-        gofumpt = {},
+        -- templ = {},
+        -- gofumpt = {},
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -734,7 +736,8 @@ require('lazy').setup({
         mojo = {
           on_new_config = function(config)
             if vim.fn.executable 'mojo-lsp-server' == 0 then
-              vim.notify('(Run `magic shell` before entering neovim)', vim.log.levels.WARN, { title = 'MOJO LSP NOT STARTED', icon = '🚨', timeout = 10000 })
+              vim.notify('(Run `magic shell` before entering neovim)', vim.log.levels.WARN,
+                { title = 'MOJO LSP NOT STARTED', icon = '🚨', timeout = 10000 })
               -- avoid trying to run mojo-lsp-server
               config.cmd = { 'echo', 'mojo lsp is working' }
               return
@@ -1004,12 +1007,14 @@ require('lazy').setup({
 vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
 
 -- These are for my python work
-vim.keymap.set({ 'n', 'v', 'i' }, '<F15>', '<cmd>FloatermNew --wintype=float --border=rounded --title=Python --silent --name=Python python3<CR>')
+vim.keymap.set({ 'n', 'v', 'i' }, '<F15>',
+  '<cmd>FloatermNew --wintype=float --border=rounded --title=Python --silent --name=Python python3<CR>')
 vim.keymap.set({ 'n', 'i' }, '<F16>', '<cmd>FloatermSend --name=Python<CR>')
 vim.keymap.set({ 'n', 'v', 'i' }, '<F12>', '<cmd>FloatermNext<CR>')
 vim.keymap.set({ 'n', 'v', 'i' }, '<F11>', '<cmd>FloatermPrev<CR>')
 
-vim.keymap.set({ 'n', 'v' }, '<leader>wpn', '<cmd>FloatermNew --wintype=float --border=rounded --title=Python --silent --name=Python python3<CR>')
+vim.keymap.set({ 'n', 'v' }, '<leader>wpn',
+  '<cmd>FloatermNew --wintype=float --border=rounded --title=Python --silent --name=Python python3<CR>')
 vim.keymap.set({ 'n', 'v' }, '<leader>wps', '<cmd>FloatermSend--name=Python <CR>')
 vim.keymap.set({ 'n', 'v' }, '<leader>wtn', '<cmd>FloatermNew --wintype=float<CR>')
 vim.keymap.set({ 'n', 'v' }, '<leader>wtt', '<cmd>FloatermToggle<CR>')
@@ -1020,31 +1025,7 @@ vim.keymap.set('n', '<C-b>', '<C-b>zz')
 vim.keymap.set({ 'n', 'x', 'o' }, 's', '<Plug>(leap-forward)')
 vim.keymap.set({ 'n', 'x', 'o' }, 'S', '<Plug>(leap-backward)')
 vim.keymap.set({ 'n', 'x', 'o' }, 'gs', '<Plug>(leap-from-window)')
-local harpoon = require 'harpoon'
 
--- REQUIRED
-harpoon:setup()
--- REQUIRED
-
-vim.keymap.set('n', '<leader>a', function()
-  harpoon:list():add()
-end)
-vim.keymap.set('n', '<C-e>', function()
-  harpoon.ui:toggle_quick_menu(harpoon:list())
-end)
-
-vim.keymap.set('n', '<C-1>', function()
-  harpoon:list():select(1)
-end)
-vim.keymap.set('n', '<C-2>', function()
-  harpoon:list():select(2)
-end)
-vim.keymap.set('n', '<C-3>', function()
-  harpoon:list():select(3)
-end)
-vim.keymap.set('n', '<C-4>', function()
-  harpoon:list():select(4)
-end)
 -- open Neotree and Aerial on startup
 -- vim.cmd 'AerialOpen'
 -- vim.cmd 'Neotree'
