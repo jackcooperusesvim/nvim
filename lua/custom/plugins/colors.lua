@@ -1,31 +1,3 @@
-function ColorMyPencils(color)
-  color = color or 'bamboo'
-  vim.cmd.colorscheme(color)
-
-  -- Define your custom highlight groups
-
-  -- vim.api.nvim_set_hl(0, 'NormalFloat', { italic = true, blend = 0, bg = '#000000' })
-  vim.api.nvim_set_hl(0, 'Normal', { bg = 'NONE', ctermbg = 'NONE' })
-
-  vim.api.nvim_set_hl(0, 'Normal', { bg = 'NONE' }) -- Main editor area
-  vim.api.nvim_set_hl(0, 'VertSplit', { bg = '#252623' }) -- Vertical splits
-  vim.api.nvim_set_hl(0, 'HSplit', { bg = '#252623' }) -- Vertical splits
-  vim.api.nvim_set_hl(0, 'StatusLine', { bg = 'NONE' }) -- Status line
-  vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'NONE' }) -- Popup menu
-  vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' }) -- Floating windows
-
-  -- vim.api.nvim_set_hl(0, 'Normal', { bg = '#252623' }) -- Set solid background for focused window
-
-  vim.api.nvim_set_hl(0, 'TelescopeNormal', { bg = 'NONE' })
-  vim.api.nvim_set_hl(0, 'TelescopeBorder', { bg = 'NONE' })
-
-  vim.api.nvim_set_hl(0, 'NormalFloat', { italic = true, blend = 0, link = 'Normal' })
-
-  vim.api.nvim_set_hl(0, 'TelescopePromptNormal', { bg = 'NONE' })
-  vim.api.nvim_set_hl(0, 'TelescopeResultsNormal', { bg = 'NONE' })
-  vim.api.nvim_set_hl(0, 'TelescopePreviewNormal', { bg = 'NONE' }) -- bg = '#252623'
-end
-
 return {
   {
     'ribru17/bamboo.nvim',
@@ -47,37 +19,6 @@ return {
         },
       }
       ColorMyPencils()
-    end,
-  },
-
-  {
-    'ellisonleao/gruvbox',
-    name = 'gruvbox',
-    config = function()
-      require('gruvbox').setup {
-        terminal_colors = true, -- add neovim terminal colors
-        undercurl = true,
-        underline = false,
-        bold = true,
-        italic = {
-          strings = false,
-          emphasis = false,
-          comments = false,
-          operators = false,
-          folds = false,
-        },
-        strikethrough = true,
-        invert_selection = false,
-        invert_signs = false,
-        invert_tabline = false,
-        invert_intend_guides = false,
-        inverse = true, -- invert background for search, diffs, statuslines and errors
-        contrast = '', -- can be "hard", "soft" or empty string
-        palette_overrides = {},
-        overrides = {},
-        dim_inactive = false,
-        transparent_mode = false,
-      }
     end,
   },
 }
