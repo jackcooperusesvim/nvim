@@ -118,7 +118,9 @@ vim.schedule(function()
   vim.opt.clipboard = 'unnamedplus'
 end)
 
--- Enable break indent
+vim.g.loaded_netrw = nil
+vim.g.loaded_netrwPlugin = nil
+
 vim.opt.breakindent = true
 
 -- Save undo history
@@ -240,7 +242,12 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  {
+    'tpope/vim-sleuth',
+    config = function()
+      vim.g.sleuth_ignored_filetypes = { 'rust' }
+    end,
+  }, -- Detect tabstop and shiftwidth automatically
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -320,6 +327,7 @@ require('lazy').setup({
           F10 = '<F10>',
           F11 = '<F11>',
           F12 = '<F12>',
+          F13 = '<F13>',
         },
       },
 
@@ -646,10 +654,15 @@ require('lazy').setup({
       end
 
       local mason_servers = {
-        clangd = {},
+        -- clangd = {},
         -- gopls = {},
         -- pyright = {},
-        -- rust_analyzer = {},
+        rust_analyzer = {
+          on_attach = function(client, _)
+            client.server_capabilities.documentFormattingProvider = false
+            client.server_capabilities.completionProvider = false
+          end,
+        },
         -- ruby_lsp = {},
         -- htmx_lsp = {},
         -- html_lsp = {},
@@ -722,7 +735,7 @@ require('lazy').setup({
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
+        local disable_filetypes = { c = true, cpp = true, rust = true }
         local lsp_format_opt
         if disable_filetypes[vim.bo[bufnr].filetype] then
           lsp_format_opt = 'never'
@@ -734,18 +747,7 @@ require('lazy').setup({
           lsp_format = lsp_format_opt,
         }
       end,
-      servers = {
-        mojo = {
-          on_new_config = function(config)
-            if vim.fn.executable 'mojo-lsp-server' == 0 then
-              vim.notify('(Run `magic shell` before entering neovim)', vim.log.levels.WARN, { title = 'MOJO LSP NOT STARTED', icon = '🚨', timeout = 10000 })
-              -- avoid trying to run mojo-lsp-server
-              config.cmd = { 'echo', 'mojo lsp is working' }
-              return
-            end
-          end,
-        },
-      },
+      servers = {},
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
@@ -1021,10 +1023,37 @@ vim.keymap.set({ 'n', 'v' }, '<leader>wtt', '<cmd>FloatermToggle<CR>')
 vim.keymap.set('n', '<C-f>', '<C-f>zz')
 vim.keymap.set('n', '<C-b>', '<C-b>zz')
 
+vim.keymap.set('n', '<C-u>', '<C-u>zz')
+vim.keymap.set('n', '<C-d>', '<C-d>zz')
+
 vim.keymap.set({ 'n', 'x', 'o' }, 's', '<Plug>(leap-forward)')
 vim.keymap.set({ 'n', 'x', 'o' }, 'S', '<Plug>(leap-backward)')
 vim.keymap.set({ 'n', 'x', 'o' }, 'gs', '<Plug>(leap-from-window)')
 
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'c',
+  callback = function()
+    vim.b.sleuth_automatic = 0
+    vim.opt_local.expandtab = true
+
+    vim.opt_local.tabstop = 1
+    vim.opt_local.shiftwidth = 1
+    vim.opt_local.expandtab = true
+    vim.opt_local.softtabstop = 1
+  end,
+})
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'rust',
+  callback = function()
+    vim.b.sleuth_automatic = 0
+    vim.opt_local.expandtab = true
+
+    vim.opt_local.tabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.expandtab = true
+    vim.opt_local.softtabstop = 4
+  end,
+})
 -- open Neotree and Aerial on startup
 -- vim.cmd 'AerialOpen'
 -- vim.cmd 'Neotree'
