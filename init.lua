@@ -148,7 +148,7 @@ vim.opt.splitbelow = true
 --  See `:help 'list'`
 --  and `:help 'listchars'`
 vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { tab = '  ', trail = '·', nbsp = '␣' }
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
@@ -1054,6 +1054,9 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.opt_local.softtabstop = 4
   end,
 })
+local color = require 'custom.hyprsubatomic'
+color.setup()
+
 -- open Neotree and Aerial on startup
 -- vim.cmd 'AerialOpen'
 -- vim.cmd 'Neotree'
